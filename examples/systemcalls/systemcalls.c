@@ -45,6 +45,7 @@ bool do_system(const char *cmd)
 *   by the command issued in @param arguments with the specified arguments.
 */
 
+// The do_exec function spawns a new process and
 bool do_exec(int count, ...)
 {
     va_list args;
@@ -78,7 +79,7 @@ bool do_exec(int count, ...)
     // onward. the first instruction pointer continues as well, but
     // with one variable different: the return value of fork(). In the
     // parent process, pid will be the process id the OS assigned to the child
-    // process, and in the child process, pid will be zero.
+    // process, and in the child process, pid will be zero. Essentially, the child process can be designated and assigned to specific tasks when the pid reference starting a cod elbock is equated to zero.
     if (pid == -1)
     {
         va_end(args);
@@ -104,13 +105,13 @@ bool do_exec(int count, ...)
         return false;
     }
 
-    if (!WIFEXITED(status)) // the child process crashed or was killed
+    if (!WIFEXITED(status))
     {
         va_end(args);
         return false;
     }
 
-    if (WEXITSTATUS(status)) // the child process exited with nonzero return value
+    if (WEXITSTATUS(status))
     {
         va_end(args);
         return false;
