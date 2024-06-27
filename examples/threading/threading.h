@@ -7,6 +7,8 @@
  * It should be returned by your thread so it can be freed by
  * the joiner thread.
  */
+
+// The whole point of this struct is to isolate the mutex lock to a specific struct (an "account" in the banking example in the text "Linux Systems Programming" in Chapter 7). This is an example of a fine-grained lock, as it only locks the access to teh data in the account
 struct thread_data{
     /*
      * TODO: add other values your thread will need to manage
@@ -14,6 +16,10 @@ struct thread_data{
      * between the start_thread_obtaining_mutex function and
      * your thread implementation.
      */
+     // The mutex is a lock that all threads accessing this struct will have to invoke in order to abide by a locking mechanism. It this mutex member is locked by another thread, it will block until the mutex becomes available (when it is unlocked by the previous occupant) and it will induce it's own lock to prevent other threads from engaging until it performs its own unlock. Mutex locks are to be respected in the entirety of the code or race conditions can still occur
+     pthread_mutex_t* mutex;
+     int wait_to_obtain_ms;
+     int wait_to_release_ms;
 
     /**
      * Set to true if the thread completed with success, false
